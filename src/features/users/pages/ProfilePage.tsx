@@ -83,10 +83,10 @@ export default function ProfilePage() {
     <div className="max-w-2xl mx-auto space-y-8">
       <div>
         <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <IconUser size={24} className="text-teal-700" />
+          <IconUser size={24} aria-hidden="true" className="text-teal-700" />
           Profil Saya
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-sm text-slate-600 mt-1">
           Kelola informasi akun Anda
         </p>
       </div>
@@ -110,7 +110,7 @@ export default function ProfilePage() {
             )}
           </div>
           <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-sm cursor-pointer hover:bg-slate-50 transition">
-            <IconCamera size={18} />
+            <IconCamera size={18} aria-hidden="true" />
             {isChangeProfilePhoto ? "Mengunggah..." : "Ganti Foto"}
             <input
               type="file"
@@ -130,10 +130,14 @@ export default function ProfilePage() {
       >
         <h2 className="font-semibold text-slate-800">Informasi Profil</h2>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
+          <label
+            htmlFor="profile-name"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
             Nama
           </label>
           <input
+            id="profile-name"
             type="text"
             value={name}
             onChange={onNameChange}
@@ -142,10 +146,14 @@ export default function ProfilePage() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
+          <label
+            htmlFor="profile-email"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
             Email
           </label>
           <input
+            id="profile-email"
             type="email"
             value={email}
             onChange={onEmailChange}
@@ -156,7 +164,7 @@ export default function ProfilePage() {
         <button
           type="submit"
           disabled={isChangeProfile}
-          className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+          className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-sm font-medium disabled:opacity-60"
         >
           {isChangeProfile ? "Menyimpan..." : "Simpan Perubahan"}
         </button>
@@ -168,15 +176,20 @@ export default function ProfilePage() {
         className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm space-y-4"
       >
         <h2 className="font-semibold text-slate-800 flex items-center gap-2">
-          <IconLock size={18} />
+          <IconLock size={18} aria-hidden="true" />
           Ubah Kata Sandi
         </h2>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
+          <label
+            htmlFor="current-password"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
             Kata Sandi Saat Ini
           </label>
           <input
+            id="current-password"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={onPasswordChange}
             required
@@ -184,11 +197,16 @@ export default function ProfilePage() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
+          <label
+            htmlFor="new-password"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
             Kata Sandi Baru
           </label>
           <input
+            id="new-password"
             type="password"
+            autoComplete="new-password"
             value={newPassword}
             onChange={onNewPasswordChange}
             required
@@ -197,11 +215,16 @@ export default function ProfilePage() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
+          <label
+            htmlFor="confirm-new-password"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
             Konfirmasi Kata Sandi Baru
           </label>
           <input
+            id="confirm-new-password"
             type="password"
+            autoComplete="new-password"
             value={confirmPassword}
             onChange={onConfirmPasswordChange}
             required
@@ -212,7 +235,7 @@ export default function ProfilePage() {
         <button
           type="submit"
           disabled={isChangeProfilePassword}
-          className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+          className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-sm font-medium disabled:opacity-60"
         >
           {isChangeProfilePassword ? "Menyimpan..." : "Ubah Kata Sandi"}
         </button>

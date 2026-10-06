@@ -55,14 +55,18 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
         className="lg:hidden p-2 rounded-lg hover:bg-slate-100 text-slate-600"
         aria-label="Toggle menu"
       >
-        <IconMenu2 size={22} />
+        <IconMenu2 size={22} aria-hidden="true" />
       </button>
 
       <Link href="/" className="flex items-center gap-2 font-bold text-teal-700">
-        <span className="w-8 h-8 rounded-lg bg-teal-700 text-white flex items-center justify-center text-sm">
+        <span
+          aria-hidden="true"
+          className="w-8 h-8 rounded-lg bg-teal-700 text-white flex items-center justify-center text-sm"
+        >
           P
         </span>
         <span className="hidden sm:inline">Delcom Posts</span>
+        <span className="sm:hidden sr-only">Delcom Posts</span>
       </Link>
 
       <div className="flex-1" />
@@ -74,6 +78,7 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
             onClick={() => setMenuOpen((v) => !v)}
             aria-haspopup="menu"
             aria-expanded={menuOpen}
+            aria-label={`Menu akun ${profile?.name || "pengguna"}`}
             className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-slate-50 transition"
           >
             <div className="w-8 h-8 rounded-full bg-teal-100 overflow-hidden">
@@ -81,13 +86,13 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={profile.photo}
-                  alt={profile.name}
+                  alt=""
                   className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-teal-700 text-sm font-semibold">
                   {profile?.name?.charAt(0)?.toUpperCase() || (
-                    <IconUser size={16} />
+                    <IconUser size={16} aria-hidden="true" />
                   )}
                 </div>
               )}
@@ -95,7 +100,11 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
             <span className="hidden md:inline text-sm font-medium text-slate-700 max-w-[120px] truncate">
               {profile?.name || "Pengguna"}
             </span>
-            <IconChevronDown size={16} className="text-slate-500" />
+            <IconChevronDown
+              size={16}
+              aria-hidden="true"
+              className="text-slate-500"
+            />
           </button>
 
           {menuOpen && (
@@ -119,7 +128,7 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
                 >
-                  <Icon size={16} />
+                  <Icon size={16} aria-hidden="true" />
                   {label}
                 </Link>
               ))}
@@ -130,10 +139,10 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
         <button
           type="button"
           onClick={handleLogout}
-          className="p-2 rounded-lg hover:bg-red-50 text-slate-500 hover:text-red-600 transition"
-          title="Keluar"
+          aria-label="Keluar"
+          className="p-2 rounded-lg hover:bg-red-50 text-slate-600 hover:text-red-700 transition"
         >
-          <IconLogout size={20} />
+          <IconLogout size={20} aria-hidden="true" />
         </button>
       </div>
     </header>

@@ -63,7 +63,7 @@ export default function HomePage() {
           <h1 className="text-xl font-bold text-slate-800">
             {tabMe ? "Postingan Saya" : "Semua Postingan"}
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-600 mt-1">
             {posts.length} postingan
           </p>
         </div>
@@ -71,6 +71,7 @@ export default function HomePage() {
           <div className="relative flex-1 sm:w-64">
             <IconSearch
               size={18}
+              aria-hidden="true"
               className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
             />
             <input
@@ -78,24 +79,25 @@ export default function HomePage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari postingan..."
+              aria-label="Cari postingan"
               className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
           <button
             type="button"
             onClick={() => setShowAdd(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-sm font-medium"
           >
-            <IconPlus size={18} />
+            <IconPlus size={18} aria-hidden="true" />
             Posting
           </button>
           {tabMe && posts.length > 0 && (
             <button
               type="button"
               onClick={() => dispatch(asyncDeleteAllPosts()).then(refresh)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-red-200 text-red-600 text-sm hover:bg-red-50"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-red-200 text-red-700 text-sm hover:bg-red-50"
             >
-              <IconTrash size={16} />
+              <IconTrash size={16} aria-hidden="true" />
               Hapus Semua
             </button>
           )}
@@ -109,7 +111,7 @@ export default function HomePage() {
           className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition ${
             !tabMe
               ? "border-teal-700 text-teal-700"
-              : "border-transparent text-slate-500 hover:text-slate-700"
+              : "border-transparent text-slate-600 hover:text-slate-800"
           }`}
         >
           Semua
@@ -119,7 +121,7 @@ export default function HomePage() {
           className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition ${
             tabMe
               ? "border-teal-700 text-teal-700"
-              : "border-transparent text-slate-500 hover:text-slate-700"
+              : "border-transparent text-slate-600 hover:text-slate-800"
           }`}
         >
           Milik Saya
@@ -147,7 +149,12 @@ export default function HomePage() {
               className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden flex flex-col"
             >
               {post.cover && (
-                <Link href={`/posts/${post.id}`}>
+                <Link
+                  href={`/posts/${post.id}`}
+                  aria-label={`Lihat detail postingan oleh ${
+                    post.author?.name || "pengguna"
+                  }`}
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={post.cover}
@@ -192,22 +199,26 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => handleLike(post.id, likes as number[])}
+                    aria-label={liked ? "Batal suka" : "Suka"}
                     className={`inline-flex items-center gap-1 text-sm ${
-                      liked ? "text-red-500" : "text-slate-500 hover:text-red-500"
+                      liked
+                        ? "text-red-700"
+                        : "text-slate-600 hover:text-red-700"
                     }`}
                   >
                     {liked ? (
-                      <IconHeartFilled size={18} />
+                      <IconHeartFilled size={18} aria-hidden="true" />
                     ) : (
-                      <IconHeart size={18} />
+                      <IconHeart size={18} aria-hidden="true" />
                     )}
                     {likes.length}
                   </button>
                   <Link
                     href={`/posts/${post.id}`}
-                    className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-700"
+                    aria-label={`${commentsCount} komentar`}
+                    className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-teal-700"
                   >
-                    <IconMessageCircle size={18} />
+                    <IconMessageCircle size={18} aria-hidden="true" />
                     {commentsCount}
                   </Link>
                 </div>

@@ -100,6 +100,7 @@ export default function DetailPage() {
   if (isPost && !post) {
     return (
       <div className="text-center py-12 text-slate-500 text-sm">
+        <h1 className="sr-only">Detail Postingan</h1>
         Memuat detail...
       </div>
     );
@@ -108,6 +109,7 @@ export default function DetailPage() {
   if (!post) {
     return (
       <div className="text-center py-12 text-slate-500 text-sm">
+        <h1 className="sr-only">Detail Postingan</h1>
         Postingan tidak ditemukan
       </div>
     );
@@ -115,12 +117,14 @@ export default function DetailPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
+      <h1 className="sr-only">Detail Postingan</h1>
+
       <button
         type="button"
         onClick={() => router.back()}
-        className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-700"
+        className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-teal-700"
       >
-        <IconArrowLeft size={18} />
+        <IconArrowLeft size={18} aria-hidden="true" />
         Kembali
       </button>
 
@@ -167,10 +171,14 @@ export default function DetailPage() {
               type="button"
               onClick={handleLike}
               className={`inline-flex items-center gap-1.5 text-sm font-medium ${
-                liked ? "text-red-500" : "text-slate-500 hover:text-red-500"
+                liked ? "text-red-700" : "text-slate-600 hover:text-red-700"
               }`}
             >
-              {liked ? <IconHeartFilled size={20} /> : <IconHeart size={20} />}
+              {liked ? (
+                <IconHeartFilled size={20} aria-hidden="true" />
+              ) : (
+                <IconHeart size={20} aria-hidden="true" />
+              )}
               {likes.length} Suka
             </button>
 
@@ -179,25 +187,25 @@ export default function DetailPage() {
                 <button
                   type="button"
                   onClick={() => setShowEdit(true)}
-                  className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-700"
+                  className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-teal-700"
                 >
-                  <IconEdit size={18} />
+                  <IconEdit size={18} aria-hidden="true" />
                   Ubah
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowCover(true)}
-                  className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-700"
+                  className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-teal-700"
                 >
-                  <IconPhoto size={18} />
+                  <IconPhoto size={18} aria-hidden="true" />
                   Cover
                 </button>
                 <button
                   type="button"
                   onClick={handleDeletePost}
-                  className="inline-flex items-center gap-1 text-sm text-red-500 hover:text-red-600"
+                  className="inline-flex items-center gap-1 text-sm text-red-700 hover:text-red-800"
                 >
-                  <IconTrash size={18} />
+                  <IconTrash size={18} aria-hidden="true" />
                   Hapus
                 </button>
               </>
@@ -207,10 +215,13 @@ export default function DetailPage() {
       </article>
 
       {/* Comments */}
-      <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 space-y-4">
-        <h3 className="font-semibold text-slate-800">
+      <section
+        aria-labelledby="comments-heading"
+        className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 space-y-4"
+      >
+        <h2 id="comments-heading" className="font-semibold text-slate-800">
           Komentar ({totalComments})
-        </h3>
+        </h2>
 
         <form onSubmit={handleComment} className="flex gap-2">
           <input
@@ -218,13 +229,15 @@ export default function DetailPage() {
             value={comment}
             onChange={onCommentChange}
             placeholder="Tulis komentar..."
+            aria-label="Tulis komentar"
             className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
           <button
             type="submit"
-            className="px-3 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white"
+            aria-label="Kirim komentar"
+            className="px-3 py-2 rounded-lg bg-teal-700 hover:bg-teal-800 text-white"
           >
-            <IconSend size={18} />
+            <IconSend size={18} aria-hidden="true" />
           </button>
         </form>
 
@@ -239,10 +252,10 @@ export default function DetailPage() {
             <button
               type="button"
               onClick={handleDeleteComment}
-              className="text-red-500 hover:text-red-600 p-1"
-              title="Hapus komentar"
+              aria-label="Hapus komentar"
+              className="text-red-700 hover:text-red-800 p-1"
             >
-              <IconTrash size={16} />
+              <IconTrash size={16} aria-hidden="true" />
             </button>
           </div>
         )}
@@ -266,7 +279,7 @@ export default function DetailPage() {
             Belum ada komentar
           </p>
         )}
-      </div>
+      </section>
 
       <ChangeModal
         open={showEdit}
