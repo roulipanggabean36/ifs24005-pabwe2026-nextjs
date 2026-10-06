@@ -75,7 +75,7 @@ export default function ChangeCoverModal({
                 className="max-h-48 mx-auto rounded-lg object-contain"
               />
             ) : (
-              <div className="text-slate-400">
+              <div className="text-slate-500">
                 <IconPhoto size={40} className="mx-auto mb-2" />
                 <p className="text-sm">Pilih gambar cover</p>
               </div>
@@ -101,7 +101,7 @@ export default function ChangeCoverModal({
             <button
               type="submit"
               disabled={!file || isPostChangeCover}
-              className="px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+              className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
             >
               {isPostChangeCover ? "Mengunggah..." : "Unggah"}
             </button>

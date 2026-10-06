@@ -24,7 +24,9 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} bg-slate-50 text-slate-900 antialiased min-h-screen`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );

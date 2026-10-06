@@ -73,7 +73,7 @@ export default function ProfilePage() {
 
   if (isProfile && !profile) {
     return (
-      <div className="text-center py-12 text-slate-400 text-sm">
+      <div className="text-center py-12 text-slate-500 text-sm">
         Memuat profil...
       </div>
     );
@@ -83,7 +83,7 @@ export default function ProfilePage() {
     <div className="max-w-2xl mx-auto space-y-8">
       <div>
         <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <IconUser size={24} className="text-teal-600" />
+          <IconUser size={24} className="text-teal-700" />
           Profil Saya
         </h1>
         <p className="text-sm text-slate-500 mt-1">
@@ -156,7 +156,7 @@ export default function ProfilePage() {
         <button
           type="submit"
           disabled={isChangeProfile}
-          className="px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+          className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
         >
           {isChangeProfile ? "Menyimpan..." : "Simpan Perubahan"}
         </button>
@@ -212,7 +212,7 @@ export default function ProfilePage() {
         <button
           type="submit"
           disabled={isChangeProfilePassword}
-          className="px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+          className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
         >
           {isChangeProfilePassword ? "Menyimpan..." : "Ubah Kata Sandi"}
         </button>

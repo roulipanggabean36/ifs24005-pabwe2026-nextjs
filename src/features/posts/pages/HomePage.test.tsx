@@ -137,14 +137,14 @@ describe("HomePage", () => {
     it("tab aktif ditandai pada tautan yang sesuai", async () => {
       const { unmount } = renderPage();
       await screen.findByText("Belajar Vitest dengan seru");
-      expect(screen.getByRole("link", { name: "Semua" }).className).toContain("border-teal-600");
+      expect(screen.getByRole("link", { name: "Semua" }).className).toContain("border-teal-700");
       expect(screen.getByRole("link", { name: "Milik Saya" }).className).toContain("border-transparent");
       unmount();
 
       nav.search = "tab=me";
       renderPage();
       await screen.findByText("Belajar Vitest dengan seru");
-      expect(screen.getByRole("link", { name: "Milik Saya" }).className).toContain("border-teal-600");
+      expect(screen.getByRole("link", { name: "Milik Saya" }).className).toContain("border-teal-700");
       expect(screen.getByRole("link", { name: "Semua" }).className).toContain("border-transparent");
     });
 

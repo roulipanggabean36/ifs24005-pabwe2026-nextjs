@@ -71,7 +71,7 @@ export default function HomePage() {
           <div className="relative flex-1 sm:w-64">
             <IconSearch
               size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
             />
             <input
               type="text"
@@ -84,7 +84,7 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => setShowAdd(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium"
           >
             <IconPlus size={18} />
             Posting
@@ -108,7 +108,7 @@ export default function HomePage() {
           href="/"
           className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition ${
             !tabMe
-              ? "border-teal-600 text-teal-700"
+              ? "border-teal-700 text-teal-700"
               : "border-transparent text-slate-500 hover:text-slate-700"
           }`}
         >
@@ -118,7 +118,7 @@ export default function HomePage() {
           href="/?tab=me"
           className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition ${
             tabMe
-              ? "border-teal-600 text-teal-700"
+              ? "border-teal-700 text-teal-700"
               : "border-transparent text-slate-500 hover:text-slate-700"
           }`}
         >
@@ -127,7 +127,7 @@ export default function HomePage() {
       </div>
 
       {isPost && (
-        <div className="text-center py-8 text-slate-400 text-sm">
+        <div className="text-center py-8 text-slate-500 text-sm">
           Memuat postingan...
         </div>
       )}
@@ -176,7 +176,7 @@ export default function HomePage() {
                     <p className="text-sm font-medium text-slate-800 truncate">
                       {post.author?.name || "Pengguna"}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500">
                       {formatDate(post.created_at)}
                     </p>
                   </div>
@@ -205,7 +205,7 @@ export default function HomePage() {
                   </button>
                   <Link
                     href={`/posts/${post.id}`}
-                    className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-600"
+                    className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-700"
                   >
                     <IconMessageCircle size={18} />
                     {commentsCount}
@@ -218,7 +218,7 @@ export default function HomePage() {
       </div>
 
       {!isPost && filtered.length === 0 && (
-        <div className="text-center py-12 text-slate-400 text-sm">
+        <div className="text-center py-12 text-slate-500 text-sm">
           Belum ada postingan
         </div>
       )}

@@ -59,7 +59,7 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
       </button>
 
       <Link href="/" className="flex items-center gap-2 font-bold text-teal-700">
-        <span className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm">
+        <span className="w-8 h-8 rounded-lg bg-teal-700 text-white flex items-center justify-center text-sm">
           P
         </span>
         <span className="hidden sm:inline">Delcom Posts</span>
@@ -95,7 +95,7 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
             <span className="hidden md:inline text-sm font-medium text-slate-700 max-w-[120px] truncate">
               {profile?.name || "Pengguna"}
             </span>
-            <IconChevronDown size={16} className="text-slate-400" />
+            <IconChevronDown size={16} className="text-slate-500" />
           </button>
 
           {menuOpen && (

@@ -43,7 +43,7 @@ export default function LoginPage() {
             Email
           </label>
           <div className="relative">
-            <IconMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <IconMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
             <input
               id="login-email-input"
               name="email"
@@ -63,7 +63,7 @@ export default function LoginPage() {
             Kata Sandi
           </label>
           <div className="relative">
-            <IconLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <IconLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
             <input
               id="login-password-input"
               name="password"
@@ -82,7 +82,7 @@ export default function LoginPage() {
           id="login-submit-button"
           type="submit"
           disabled={isAuthLogin}
-          className="w-full py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-medium text-sm transition disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full py-2.5 rounded-lg bg-teal-700 hover:bg-teal-700 text-white font-medium text-sm transition disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {isAuthLogin ? "Memproses..." : "Masuk"}
         </button>
@@ -90,7 +90,7 @@ export default function LoginPage() {
 
       <p className="mt-6 text-center text-sm text-slate-500">
         Belum punya akun?{" "}
-        <Link href="/auth/register" className="text-teal-600 font-medium hover:underline">
+        <Link href="/auth/register" className="text-teal-700 font-medium hover:underline">
           Daftar
         </Link>
       </p>

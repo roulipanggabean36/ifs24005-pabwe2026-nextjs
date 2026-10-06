@@ -29,7 +29,7 @@ export default function UsersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <IconUsers size={24} className="text-teal-600" />
+            <IconUsers size={24} className="text-teal-700" />
             Daftar Pengguna
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -39,7 +39,7 @@ export default function UsersPage() {
         <div className="relative w-full sm:w-72">
           <IconSearch
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
           />
           <input
             type="text"
@@ -80,7 +80,7 @@ export default function UsersPage() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-12 text-slate-400 text-sm">
+        <div className="text-center py-12 text-slate-500 text-sm">
           Tidak ada pengguna ditemukan
         </div>
       )}

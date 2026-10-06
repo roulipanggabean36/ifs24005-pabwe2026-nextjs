@@ -38,7 +38,7 @@ export default function PostLayout({
   if (!ready) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="text-slate-400 text-sm">Memuat sesi...</div>
+        <div className="text-slate-500 text-sm">Memuat sesi...</div>
       </div>
     );
   }

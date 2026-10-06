@@ -99,7 +99,7 @@ export default function DetailPage() {
 
   if (isPost && !post) {
     return (
-      <div className="text-center py-12 text-slate-400 text-sm">
+      <div className="text-center py-12 text-slate-500 text-sm">
         Memuat detail...
       </div>
     );
@@ -107,7 +107,7 @@ export default function DetailPage() {
 
   if (!post) {
     return (
-      <div className="text-center py-12 text-slate-400 text-sm">
+      <div className="text-center py-12 text-slate-500 text-sm">
         Postingan tidak ditemukan
       </div>
     );
@@ -118,7 +118,7 @@ export default function DetailPage() {
       <button
         type="button"
         onClick={() => router.back()}
-        className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-600"
+        className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-700"
       >
         <IconArrowLeft size={18} />
         Kembali
@@ -154,7 +154,7 @@ export default function DetailPage() {
               <p className="font-medium text-slate-800">
                 {post.author?.name || "Pengguna"}
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {formatDate(post.created_at)}
               </p>
             </div>
@@ -179,7 +179,7 @@ export default function DetailPage() {
                 <button
                   type="button"
                   onClick={() => setShowEdit(true)}
-                  className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-600"
+                  className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-700"
                 >
                   <IconEdit size={18} />
                   Ubah
@@ -187,7 +187,7 @@ export default function DetailPage() {
                 <button
                   type="button"
                   onClick={() => setShowCover(true)}
-                  className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-600"
+                  className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-teal-700"
                 >
                   <IconPhoto size={18} />
                   Cover
@@ -222,7 +222,7 @@ export default function DetailPage() {
           />
           <button
             type="submit"
-            className="px-3 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white"
+            className="px-3 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white"
           >
             <IconSend size={18} />
           </button>
@@ -254,7 +254,7 @@ export default function DetailPage() {
               className="p-3 rounded-lg bg-slate-50 border border-slate-100"
             >
               <p className="text-sm text-slate-700">{c.comment}</p>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 {formatDate(c.created_at)}
               </p>
             </div>
@@ -262,7 +262,7 @@ export default function DetailPage() {
         </div>
 
         {comments.length === 0 && !post.my_comment && (
-          <p className="text-sm text-slate-400 text-center py-2">
+          <p className="text-sm text-slate-500 text-center py-2">
             Belum ada komentar
           </p>
         )}

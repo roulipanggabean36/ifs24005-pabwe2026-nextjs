@@ -80,7 +80,7 @@ export default function ChangeModal({
             <button
               type="submit"
               disabled={isPostChange}
-              className="px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+              className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
             >
               {isPostChange ? "Menyimpan..." : "Simpan"}
             </button>
