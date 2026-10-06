@@ -1,5 +1,3 @@
-// komentar
-
 "use client";
 
 import { FormEvent, useEffect } from "react";
@@ -19,7 +17,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (authUser) {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }, [authUser, router]);
 
@@ -28,7 +26,7 @@ export default function LoginPage() {
     if (!email || !password) return;
     const result = await dispatch(asyncLogin({ email, password }));
     if (asyncLogin.fulfilled.match(result)) {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }
 

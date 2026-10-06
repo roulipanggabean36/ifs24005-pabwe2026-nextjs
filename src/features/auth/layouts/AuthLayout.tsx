@@ -14,7 +14,7 @@ export default function AuthLayout({
   useEffect(() => {
     const token = getAccessToken();
     if (token) {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }, [router]);
 

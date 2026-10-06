@@ -20,7 +20,7 @@ interface NavbarProps {
 
 const dropdownLinks = [
   { href: "/profile", label: "Profil Saya", icon: IconUser },
-  { href: "/?tab=me", label: "Postingan Saya", icon: IconArticle },
+  { href: "/dashboard?tab=me", label: "Postingan Saya", icon: IconArticle },
   { href: "/users", label: "Daftar Pengguna", icon: IconUsers },
 ];
 

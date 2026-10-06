@@ -11,8 +11,8 @@ import {
 } from "@tabler/icons-react";
 
 const menus = [
-  { href: "/", label: "Semua Postingan", icon: IconHome },
-  { href: "/?tab=me", label: "Postingan Saya", icon: IconArticle },
+  { href: "/dashboard", label: "Semua Postingan", icon: IconHome },
+  { href: "/dashboard?tab=me", label: "Postingan Saya", icon: IconArticle },
   { href: "/users", label: "Daftar Pengguna", icon: IconUsers },
   { href: "/profile", label: "Profil Saya", icon: IconUser },
 ];
@@ -60,10 +60,10 @@ export default function SidebarComponent({ open, onClose }: SidebarProps) {
         <nav className="p-3 space-y-1">
           {menus.map((menu) => {
             const isActive =
-              menu.href === "/"
-                ? pathname === "/" && !tabMe
-                : menu.href.startsWith("/?")
-                  ? pathname === "/" && tabMe
+              menu.href === "/dashboard"
+                ? (pathname === "/dashboard" || pathname === "/") && !tabMe
+                : menu.href.startsWith("/dashboard?")
+                  ? (pathname === "/dashboard" || pathname === "/") && tabMe
                   : pathname.startsWith(menu.href);
 
             const Icon = menu.icon;
