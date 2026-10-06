@@ -1,3 +1,5 @@
+// komentar
+
 "use client";
 
 import { FormEvent, useEffect } from "react";
@@ -39,42 +41,47 @@ export default function LoginPage() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="login-email-input" className="block text-sm font-medium text-slate-700 mb-1">
             Email
           </label>
           <div className="relative">
             <IconMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input
-              id="email"
+              id="login-email-input"
+              name="email"
               type="email"
               value={email}
               onChange={onEmailChange}
               placeholder="nama@email.com"
               required
+              autoComplete="email"
               className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
             />
           </div>
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="login-password-input" className="block text-sm font-medium text-slate-700 mb-1">
             Kata Sandi
           </label>
           <div className="relative">
             <IconLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input
-              id="password"
+              id="login-password-input"
+              name="password"
               type="password"
               value={password}
               onChange={onPasswordChange}
               placeholder="••••••••"
               required
+              autoComplete="current-password"
               className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
             />
           </div>
         </div>
 
         <button
+          id="login-submit-button"
           type="submit"
           disabled={isAuthLogin}
           className="w-full py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-medium text-sm transition disabled:opacity-60 disabled:cursor-not-allowed"
