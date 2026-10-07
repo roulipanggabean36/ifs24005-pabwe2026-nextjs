@@ -39,9 +39,11 @@ export default function SidebarComponent({
     <>
       {/* Overlay mobile */}
       {open && (
-        <div
-          role="presentation"
-          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+        <button
+          type="button"
+          aria-label="Tutup overlay"
+          tabIndex={-1}
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden cursor-default"
           onClick={onClose}
         />
       )}
@@ -60,6 +62,7 @@ export default function SidebarComponent({
           <span className="font-semibold text-slate-800">Menu</span>
           <button
             type="button"
+            aria-label="Tutup menu"
             onClick={onClose}
             className="p-1 rounded hover:bg-slate-100"
           >

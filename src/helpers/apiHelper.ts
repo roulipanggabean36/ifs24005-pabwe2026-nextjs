@@ -3,12 +3,12 @@ import { DELCOM_BASEURL } from "@/lib/config";
 const ACCESS_TOKEN_KEY = "accessToken";
 
 export function getAccessToken(): string | null {
-  if (typeof globalThis.window === "undefined") return null;
+  if (globalThis.window === undefined) return null;
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 }
 
 export function putAccessToken(token: string | null): void {
-  if (typeof globalThis.window === "undefined") return;
+  if (globalThis.window === undefined) return;
   if (token) {
     localStorage.setItem(ACCESS_TOKEN_KEY, token);
   } else {

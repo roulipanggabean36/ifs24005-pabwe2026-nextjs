@@ -81,7 +81,7 @@ describe("SidebarComponent", () => {
     const onClose = vi.fn();
     renderWithProviders(<SidebarComponent open onClose={onClose} />);
 
-    await userEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button", { name: "Tutup menu" }));
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
@@ -99,7 +99,7 @@ describe("SidebarComponent", () => {
     const { container } = renderWithProviders(<SidebarComponent open />);
 
     await userEvent.click(container.querySelector(".bg-black\\/40") as Element);
-    await userEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button", { name: "Tutup menu" }));
     await userEvent.click(linkByName("Profil Saya"));
 
     expect(linkByName("Profil Saya")).toBeInTheDocument();
