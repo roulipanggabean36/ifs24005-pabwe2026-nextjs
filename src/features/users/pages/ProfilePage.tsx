@@ -55,7 +55,7 @@ export default function ProfilePage() {
     dispatch(asyncGetProfile());
   }
 
-  aasync function handleChangePassword(e: SyntheticEvent<HTMLFormElement>) {
+  async function handleChangePassword(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = await dispatch(
       asyncChangeProfilePassword({
