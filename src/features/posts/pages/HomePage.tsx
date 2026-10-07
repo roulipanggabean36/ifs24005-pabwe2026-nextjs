@@ -142,6 +142,7 @@ export default function HomePage() {
             : 0;
           const myId = profile?.id;
           const liked = myId != null && likes.includes(myId);
+          const authorName = post.author?.name || "Pengguna";
 
           return (
             <article
@@ -151,9 +152,7 @@ export default function HomePage() {
               {post.cover && (
                 <Link
                   href={`/posts/${post.id}`}
-                  aria-label={`Lihat detail postingan oleh ${
-                    post.author?.name || "pengguna"
-                  }`}
+                  aria-label={`Lihat detail postingan oleh ${authorName}`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -181,7 +180,7 @@ export default function HomePage() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-slate-800 truncate">
-                      {post.author?.name || "Pengguna"}
+                      {authorName}
                     </p>
                     <p className="text-xs text-slate-500">
                       {formatDate(post.created_at)}
