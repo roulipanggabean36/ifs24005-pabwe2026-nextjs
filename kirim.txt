@@ -1385,14 +1385,13 @@ describe("server launcher", () => {
   });
 });
 ===== src\types\action.ts =====
-export type ActionType = string;
+
 
 export interface Action {
   type: ActionType;
   payload?: unknown;
 }
 ===== C:\PABWE\ifs24005-pabwe2026-nextjs\src\types\action.ts =====
-export type ActionType = string;
 
 export interface Action {
   type: ActionType;
