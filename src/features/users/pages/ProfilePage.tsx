@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
   asyncGetProfile,
@@ -41,7 +41,7 @@ export default function ProfilePage() {
     }
   }, [profile, setName, setEmail]);
 
-  async function handleUpdateProfile(e: FormEvent) {
+  async function handleUpdateProfile(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     await dispatch(asyncChangeProfile({ name, email }));
     dispatch(asyncGetProfile());
@@ -55,7 +55,7 @@ export default function ProfilePage() {
     dispatch(asyncGetProfile());
   }
 
-  async function handleChangePassword(e: FormEvent) {
+  aasync function handleChangePassword(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = await dispatch(
       asyncChangeProfilePassword({

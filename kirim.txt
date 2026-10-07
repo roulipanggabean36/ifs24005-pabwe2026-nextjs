@@ -1,0 +1,1443 @@
+﻿===== src\app\(dashboard)\layout.tsx =====
+import PostLayout from "@/features/posts/layouts/PostLayout";
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <PostLayout>{children}</PostLayout>;
+}
+===== src\app\auth\layout.tsx =====
+import AuthLayout from "@/features/auth/layouts/AuthLayout";
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <AuthLayout>{children}</AuthLayout>;
+}
+===== src\app\layout.tsx =====
+import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import Providers from "@/components/Providers";
+import "./globals.css";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Delcom Posts",
+  description: "Aplikasi manajemen postingan - ifs24005-pabwe2026-nextjs",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="id">
+      <body
+        className={`${plusJakarta.variable} bg-slate-50 text-slate-900 antialiased min-h-screen`}
+      >
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+}
+===== src\components\Providers.tsx =====
+"use client";
+
+import { Provider } from "react-redux";
+import { store } from "@/store";
+
+export default function Providers({ children }: { children: React.ReactNode }) {
+  return <Provider store={store}>{children}</Provider>;
+}
+===== src\features\auth\layouts\AuthLayout.tsx =====
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getAccessToken } from "@/helpers/apiHelper";
+
+export default function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = getAccessToken();
+    if (token) {
+      router.replace("/");
+    }
+  }, [router]);
+
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 via-slate-50 to-cyan-50 p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-teal-700 text-white text-2xl font-bold shadow-lg mb-4">
+            P
+          </div>
+          <h1 className="text-2xl font-bold text-slate-800">Delcom Posts</h1>
+          <p className="text-slate-600 mt-1 text-sm">
+            Bagikan cerita dan ide Anda
+          </p>
+        </div>
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-8">
+          {children}
+        </div>
+      </div>
+    </main>
+  );
+}
+===== src\features\auth\pages\LoginPage.tsx =====
+"use client";
+
+import { FormEvent, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import useInput from "@/hooks/useInput";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { asyncLogin } from "../states/action";
+import { IconMail, IconLock } from "@tabler/icons-react";
+
+export default function LoginPage() {
+  const [email, onEmailChange] = useInput("");
+  const [password, onPasswordChange] = useInput("");
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { isAuthLogin, authUser } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (authUser) {
+      router.replace("/");
+    }
+  }, [authUser, router]);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!email || !password) return;
+    const result = await dispatch(asyncLogin({ email, password }));
+    if (asyncLogin.fulfilled.match(result)) {
+      router.replace("/");
+    }
+  }
+
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-slate-800 mb-1">Masuk</h2>
+      <p className="text-sm text-slate-500 mb-6">
+        Masuk ke akun Anda untuk melanjutkan
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="login-email-input" className="block text-sm font-medium text-slate-700 mb-1">
+            Email
+          </label>
+          <div className="relative">
+            <IconMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <input
+              id="login-email-input"
+              name="email"
+              type="email"
+              value={email}
+              onChange={onEmailChange}
+              placeholder="nama@email.com"
+              required
+              autoComplete="email"
+              className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="login-password-input" className="block text-sm font-medium text-slate-700 mb-1">
+            Kata Sandi
+          </label>
+          <div className="relative">
+            <IconLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <input
+              id="login-password-input"
+              name="password"
+              type="password"
+              value={password}
+              onChange={onPasswordChange}
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+              required
+              autoComplete="current-password"
+              className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+            />
+          </div>
+        </div>
+
+        <button
+          id="login-submit-button"
+          type="submit"
+          disabled={isAuthLogin}
+          className="w-full py-2.5 rounded-lg bg-teal-700 hover:bg-teal-700 text-white font-medium text-sm transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {isAuthLogin ? "Memproses..." : "Masuk"}
+        </button>
+      </form>
+
+      <p className="mt-6 text-center text-sm text-slate-500">
+        Belum punya akun?{" "}
+        <Link href="/auth/register" className="text-teal-700 font-medium hover:underline">
+          Daftar
+        </Link>
+      </p>
+    </div>
+  );
+}
+===== src\features\auth\pages\RegisterPage.tsx =====
+"use client";
+
+import { FormEvent } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import useInput from "@/hooks/useInput";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { asyncRegister } from "../states/action";
+import { IconUser, IconMail, IconLock } from "@tabler/icons-react";
+
+export default function RegisterPage() {
+  const [name, onNameChange] = useInput("");
+  const [email, onEmailChange] = useInput("");
+  const [password, onPasswordChange] = useInput("");
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { isAuthRegister } = useAppSelector((state) => state.auth);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!name || !email || !password) return;
+    const result = await dispatch(asyncRegister({ name, email, password }));
+    if (asyncRegister.fulfilled.match(result)) {
+      router.push("/auth/login");
+    }
+  }
+
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-slate-800 mb-1">Daftar</h2>
+      <p className="text-sm text-slate-500 mb-6">
+        Buat akun baru untuk mulai memposting
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
+            Nama
+          </label>
+          <div className="relative">
+            <IconUser className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={onNameChange}
+              placeholder="Nama lengkap"
+              required
+              className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+            Email
+          </label>
+          <div className="relative">
+            <IconMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={onEmailChange}
+              placeholder="nama@email.com"
+              required
+              className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+            Kata Sandi
+          </label>
+          <div className="relative">
+            <IconLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={onPasswordChange}
+              placeholder="Minimal 6 karakter"
+              required
+              minLength={6}
+              className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          disabled={isAuthRegister}
+          className="w-full py-2.5 rounded-lg bg-teal-700 hover:bg-teal-700 text-white font-medium text-sm transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {isAuthRegister ? "Memproses..." : "Daftar"}
+        </button>
+      </form>
+
+      <p className="mt-6 text-center text-sm text-slate-500">
+        Sudah punya akun?{" "}
+        <Link href="/auth/login" className="text-teal-700 font-medium hover:underline">
+          Masuk
+        </Link>
+      </p>
+    </div>
+  );
+}
+===== src\features\posts\layouts\PostLayout.tsx =====
+"use client";
+
+import { Suspense, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getAccessToken, putAccessToken } from "@/helpers/apiHelper";
+import { useAppDispatch } from "@/hooks/redux";
+import { asyncGetProfile } from "@/features/users/states/action";
+import NavbarComponent from "../components/NavbarComponent";
+import SidebarComponent from "../components/SidebarComponent";
+
+export default function PostLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const token = getAccessToken();
+    if (!token) {
+      router.replace("/auth/login");
+      return;
+    }
+    dispatch(asyncGetProfile()).then((result) => {
+      if (asyncGetProfile.fulfilled.match(result) && result.payload) {
+        setReady(true);
+      } else {
+        putAccessToken(null);
+        router.replace("/auth/login");
+      }
+    });
+  }, [dispatch, router]);
+
+  if (!ready) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-slate-500 text-sm">Memuat sesi...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <NavbarComponent onToggleSidebar={() => setSidebarOpen((v) => !v)} />
+      <div className="flex">
+        <Suspense fallback={null}>
+          <SidebarComponent
+            open={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
+        </Suspense>
+        <main className="flex-1 p-4 sm:p-6 max-w-5xl w-full mx-auto">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}
+===== src\features\posts\modals\AddModal.tsx =====
+"use client";
+
+import { FormEvent } from "react";
+import useInput from "@/hooks/useInput";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { asyncAddPost } from "../states/action";
+import { IconX } from "@tabler/icons-react";
+
+interface AddModalProps {
+  open: boolean;
+  onClose: () => void;
+  onSuccess?: () => void;
+}
+
+export default function AddModal({ open, onClose, onSuccess }: AddModalProps) {
+  const [description, onDescriptionChange, , reset] = useInput("");
+  const dispatch = useAppDispatch();
+  const { isPostAdd } = useAppSelector((state) => state.posts);
+
+  if (!open) return null;
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!description.trim()) return;
+    const result = await dispatch(asyncAddPost(description.trim()));
+    if (asyncAddPost.fulfilled.match(result)) {
+      reset();
+      onClose();
+      onSuccess?.();
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-slate-800">Postingan Baru</h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1 rounded hover:bg-slate-100 text-slate-500"
+          >
+            <IconX size={20} />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Deskripsi
+            </label>
+            <textarea
+              value={description}
+              onChange={onDescriptionChange}
+              rows={4}
+              required
+              placeholder="Apa yang ingin Anda bagikan?"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+            />
+          </div>
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded-lg border border-slate-200 text-sm hover:bg-slate-50"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              disabled={isPostAdd}
+              className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+            >
+              {isPostAdd ? "Mengirim..." : "Publikasikan"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+===== src\features\posts\modals\ChangeCoverModal.tsx =====
+"use client";
+
+import { FormEvent, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { asyncChangeCoverPost } from "../states/action";
+import { IconX, IconPhoto } from "@tabler/icons-react";
+
+interface ChangeCoverModalProps {
+  open: boolean;
+  onClose: () => void;
+  postId: number | string;
+  onSuccess?: () => void;
+}
+
+export default function ChangeCoverModal({
+  open,
+  onClose,
+  postId,
+  onSuccess,
+}: ChangeCoverModalProps) {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { isPostChangeCover } = useAppSelector((state) => state.posts);
+
+  if (!open) return null;
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setFile(f);
+    setPreview(URL.createObjectURL(f));
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!file) return;
+    const result = await dispatch(
+      asyncChangeCoverPost({ id: postId, file })
+    );
+    if (asyncChangeCoverPost.fulfilled.match(result)) {
+      setFile(null);
+      setPreview(null);
+      onClose();
+      onSuccess?.();
+    }
+  }
+
+  function handleClose() {
+    setFile(null);
+    setPreview(null);
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-slate-800">Ubah Cover</h3>
+          <button
+            type="button"
+            onClick={handleClose}
+            className="p-1 rounded hover:bg-slate-100 text-slate-500"
+          >
+            <IconX size={20} />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center">
+            {preview ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={preview}
+                alt="Preview"
+                className="max-h-48 mx-auto rounded-lg object-contain"
+              />
+            ) : (
+              <div className="text-slate-500">
+                <IconPhoto size={40} className="mx-auto mb-2" />
+                <p className="text-sm">Pilih gambar cover</p>
+              </div>
+            )}
+            <label className="inline-block mt-3 px-4 py-2 rounded-lg border border-slate-200 text-sm cursor-pointer hover:bg-slate-50">
+              Pilih File
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </label>
+          </div>
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="px-4 py-2 rounded-lg border border-slate-200 text-sm hover:bg-slate-50"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              disabled={!file || isPostChangeCover}
+              className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+            >
+              {isPostChangeCover ? "Mengunggah..." : "Unggah"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+===== src\features\posts\modals\ChangeModal.tsx =====
+"use client";
+
+import { FormEvent, useEffect } from "react";
+import useInput from "@/hooks/useInput";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { asyncChangePost } from "../states/action";
+import { IconX } from "@tabler/icons-react";
+
+interface ChangeModalProps {
+  open: boolean;
+  onClose: () => void;
+  postId: number | string;
+  initialDescription?: string;
+  onSuccess?: () => void;
+}
+
+export default function ChangeModal({
+  open,
+  onClose,
+  postId,
+  initialDescription = "",
+  onSuccess,
+}: ChangeModalProps) {
+  const [description, onDescriptionChange, setDescription] = useInput("");
+  const dispatch = useAppDispatch();
+  const { isPostChange } = useAppSelector((state) => state.posts);
+
+  useEffect(() => {
+    if (open) setDescription(initialDescription);
+  }, [open, initialDescription, setDescription]);
+
+  if (!open) return null;
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!description.trim()) return;
+    const result = await dispatch(
+      asyncChangePost({ id: postId, description: description.trim() })
+    );
+    if (asyncChangePost.fulfilled.match(result)) {
+      onClose();
+      onSuccess?.();
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-slate-800">Ubah Postingan</h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1 rounded hover:bg-slate-100 text-slate-500"
+          >
+            <IconX size={20} />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Deskripsi
+            </label>
+            <textarea
+              value={description}
+              onChange={onDescriptionChange}
+              rows={4}
+              required
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+            />
+          </div>
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded-lg border border-slate-200 text-sm hover:bg-slate-50"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              disabled={isPostChange}
+              className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-700 text-white text-sm font-medium disabled:opacity-60"
+            >
+              {isPostChange ? "Menyimpan..." : "Simpan"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+===== src\features\users\pages\ProfilePage.tsx =====
+"use client";
+
+import { FormEvent, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import {
+  asyncGetProfile,
+  asyncChangeProfile,
+  asyncChangeProfilePhoto,
+  asyncChangeProfilePassword,
+} from "../states/action";
+import useInput from "@/hooks/useInput";
+import { IconUser, IconCamera, IconLock } from "@tabler/icons-react";
+
+export default function ProfilePage() {
+  const dispatch = useAppDispatch();
+  const {
+    profile,
+    isProfile,
+    isChangeProfile,
+    isChangeProfilePhoto,
+    isChangeProfilePassword,
+  } = useAppSelector((state) => state.users);
+
+  const [name, onNameChange, setName] = useInput("");
+  const [email, onEmailChange, setEmail] = useInput("");
+  const [password, onPasswordChange, , resetPassword] = useInput("");
+  const [newPassword, onNewPasswordChange, , resetNewPassword] = useInput("");
+  const [confirmPassword, onConfirmPasswordChange, , resetConfirm] =
+    useInput("");
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const photoSrc = photoPreview || profile?.photo;
+
+  useEffect(() => {
+    dispatch(asyncGetProfile());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name || "");
+      setEmail(profile.email || "");
+    }
+  }, [profile, setName, setEmail]);
+
+  async function handleUpdateProfile(e: FormEvent) {
+    e.preventDefault();
+    await dispatch(asyncChangeProfile({ name, email }));
+    dispatch(asyncGetProfile());
+  }
+
+  async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPhotoPreview(URL.createObjectURL(file));
+    await dispatch(asyncChangeProfilePhoto(file));
+    dispatch(asyncGetProfile());
+  }
+
+  async function handleChangePassword(e: FormEvent) {
+    e.preventDefault();
+    const result = await dispatch(
+      asyncChangeProfilePassword({
+        password,
+        new_password: newPassword,
+        new_password_confirmation: confirmPassword,
+      })
+    );
+    if (asyncChangeProfilePassword.fulfilled.match(result)) {
+      resetPassword();
+      resetNewPassword();
+      resetConfirm();
+    }
+  }
+
+  if (isProfile && !profile) {
+    return (
+      <div className="text-center py-12 text-slate-500 text-sm">
+        Memuat profil...
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto space-y-8">
+      <div>
+        <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <IconUser size={24} aria-hidden="true" className="text-teal-700" />
+          Profil Saya
+        </h1>
+        <p className="text-sm text-slate-600 mt-1">
+          Kelola informasi akun Anda
+        </p>
+      </div>
+
+      {/* Photo */}
+      <div className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
+        <h2 className="font-semibold text-slate-800 mb-4">Foto Profil</h2>
+        <div className="flex items-center gap-4">
+          <div className="w-20 h-20 rounded-full bg-teal-100 overflow-hidden">
+            {photoSrc ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={photoSrc}
+                alt="Foto profil"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-teal-700 text-2xl font-semibold">
+                {profile?.name?.charAt(0)?.toUpperCase() || "U"}
+              </div>
+            )}
+          </div>
+          <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-sm cursor-pointer hover:bg-slate-50 transition">
+            <IconCamera size={18} aria-hidden="true" />
+            {isChangeProfilePhoto ? "Mengunggah..." : "Ganti Foto"}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handlePhotoChange}
+              disabled={isChangeProfilePhoto}
+            />
+          </label>
+        </div>
+      </div>
+
+      {/* Profile form */}
+      <form
+        onSubmit={handleUpdateProfile}
+        className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm space-y-4"
+      >
+        <h2 className="font-semibold text-slate-800">Informasi Profil</h2>
+        <div>
+          <label
+            htmlFor="profile-name"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
+            Nama
+          </label>
+          <input
+            id="profile-name"
+            type="text"
+            value={name}
+            onChange={onNameChange}
+            required
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="profile-email"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
+            Email
+          </label>
+          <input
+            id="profile-email"
+            type="email"
+            value={email}
+            onChange={onEmailChange}
+            required
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={isChangeProfile}
+          className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-sm font-medium disabled:opacity-60"
+        >
+          {isChangeProfile ? "Menyimpan..." : "Simpan Perubahan"}
+        </button>
+      </form>
+
+      {/* Password */}
+      <form
+        onSubmit={handleChangePassword}
+        className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm space-y-4"
+      >
+        <h2 className="font-semibold text-slate-800 flex items-center gap-2">
+          <IconLock size={18} aria-hidden="true" />
+          Ubah Kata Sandi
+        </h2>
+        <div>
+          <label
+            htmlFor="current-password"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
+            Kata Sandi Saat Ini
+          </label>
+          <input
+            id="current-password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={onPasswordChange}
+            required
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="new-password"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
+            Kata Sandi Baru
+          </label>
+          <input
+            id="new-password"
+            type="password"
+            autoComplete="new-password"
+            value={newPassword}
+            onChange={onNewPasswordChange}
+            required
+            minLength={6}
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="confirm-new-password"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
+            Konfirmasi Kata Sandi Baru
+          </label>
+          <input
+            id="confirm-new-password"
+            type="password"
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={onConfirmPasswordChange}
+            required
+            minLength={6}
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={isChangeProfilePassword}
+          className="px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-sm font-medium disabled:opacity-60"
+        >
+          {isChangeProfilePassword ? "Menyimpan..." : "Ubah Kata Sandi"}
+        </button>
+      </form>
+    </div>
+  );
+}
+===== src\helpers\apiHelper.ts =====
+import { DELCOM_BASEURL } from "@/lib/config";
+
+const ACCESS_TOKEN_KEY = "accessToken";
+
+export function getAccessToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(ACCESS_TOKEN_KEY);
+}
+
+export function putAccessToken(token: string | null): void {
+  if (typeof window === "undefined") return;
+  if (token) {
+    localStorage.setItem(ACCESS_TOKEN_KEY, token);
+  } else {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+  }
+}
+
+type FetchOptions = {
+  method?: string;
+  body?: BodyInit | null;
+  headers?: Record<string, string>;
+  auth?: boolean;
+  params?: Record<string, string | number | undefined | null>;
+};
+
+export async function fetchApi<T = unknown>(
+  endpoint: string,
+  options: FetchOptions = {}
+): Promise<T> {
+  const {
+    method = "GET",
+    body = null,
+    headers = {},
+    auth = true,
+    params,
+  } = options;
+
+  let url = `${DELCOM_BASEURL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
+
+  if (params) {
+    const search = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        search.append(key, String(value));
+      }
+    });
+    const qs = search.toString();
+    if (qs) url += `?${qs}`;
+  }
+
+  const finalHeaders: Record<string, string> = {
+    Accept: "application/json",
+    ...headers,
+  };
+
+  if (auth) {
+    const token = getAccessToken();
+    if (token) {
+      finalHeaders.Authorization = `Bearer ${token}`;
+    }
+  }
+
+  if (body && !(body instanceof FormData)) {
+    if (!finalHeaders["Content-Type"]) {
+      finalHeaders["Content-Type"] = "application/json";
+    }
+  }
+
+  const response = await fetch(url, {
+    method,
+    headers: finalHeaders,
+    body,
+  });
+
+  const data = await response.json().catch(() => ({
+    status: "fail",
+    message: "Gagal memproses respons server",
+  }));
+
+  if (!response.ok || data.status === "fail") {
+    const message =
+      data?.message ||
+      (data?.data?.field ? data.data.field.join(", ") : null) ||
+      `Request gagal (${response.status})`;
+    throw new Error(message);
+  }
+
+  return data as T;
+}
+===== src\helpers\apiHelper.test.ts =====
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { DELCOM_BASEURL } from "@/lib/config";
+import { fetchApi, getAccessToken, putAccessToken } from "./apiHelper";
+
+function mockResponse(body: unknown, init: { ok?: boolean; status?: number; json?: boolean } = {}) {
+  const { ok = true, status = 200, json = true } = init;
+  return {
+    ok,
+    status,
+    json: json
+      ? vi.fn().mockResolvedValue(body)
+      : vi.fn().mockRejectedValue(new Error("bukan json")),
+  };
+}
+
+describe("apiHelper token utils", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("mengembalikan null bila token belum ada", () => {
+    expect(getAccessToken()).toBeNull();
+  });
+
+  it("menyimpan dan mengambil token", () => {
+    putAccessToken("test-token-123");
+    expect(getAccessToken()).toBe("test-token-123");
+  });
+
+  it("menghapus token saat nilai null", () => {
+    putAccessToken("abc");
+    putAccessToken(null);
+    expect(getAccessToken()).toBeNull();
+  });
+
+  it("di sisi server (tanpa window): getAccessToken null dan putAccessToken tidak melakukan apa pun", () => {
+    const setSpy = vi.spyOn(Storage.prototype, "setItem");
+    vi.stubGlobal("window", undefined);
+
+    expect(getAccessToken()).toBeNull();
+    expect(() => putAccessToken("x")).not.toThrow();
+    expect(setSpy).not.toHaveBeenCalled();
+
+    vi.unstubAllGlobals();
+    setSpy.mockRestore();
+  });
+});
+
+describe("fetchApi", () => {
+  const fetchMock = vi.fn();
+
+  beforeEach(() => {
+    localStorage.clear();
+    fetchMock.mockReset();
+    vi.stubGlobal("fetch", fetchMock);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("GET default: menambah base URL, header Accept, dan mengembalikan data", async () => {
+    const body = { status: "success", message: "ok", data: { a: 1 } };
+    fetchMock.mockResolvedValue(mockResponse(body));
+
+    const result = await fetchApi("/posts");
+
+    expect(result).toEqual(body);
+    expect(fetchMock).toHaveBeenCalledWith(`${DELCOM_BASEURL}/posts`, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      body: null,
+    });
+  });
+
+  it("endpoint tanpa awalan '/' tetap menghasilkan URL yang benar", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+
+    await fetchApi("posts");
+
+    expect(fetchMock.mock.calls[0][0]).toBe(`${DELCOM_BASEURL}/posts`);
+  });
+
+  it("menyertakan bearer token bila tersedia", async () => {
+    putAccessToken("tok");
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+
+    await fetchApi("/users/me");
+
+    expect(fetchMock.mock.calls[0][1].headers.Authorization).toBe("Bearer tok");
+  });
+
+  it("auth=true tanpa token: tidak ada header Authorization", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+
+    await fetchApi("/users/me");
+
+    expect(fetchMock.mock.calls[0][1].headers.Authorization).toBeUndefined();
+  });
+
+  it("auth=false: token tidak dikirim walau tersimpan", async () => {
+    putAccessToken("tok");
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+
+    await fetchApi("/auth/login", { auth: false });
+
+    expect(fetchMock.mock.calls[0][1].headers.Authorization).toBeUndefined();
+  });
+
+  it("query params: nilai kosong/null/undefined dilewati", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+
+    await fetchApi("/posts", {
+      params: { is_me: 1, q: "halo dunia", a: undefined, b: null, c: "" },
+    });
+
+    expect(fetchMock.mock.calls[0][0]).toBe(
+      `${DELCOM_BASEURL}/posts?is_me=1&q=halo+dunia`
+    );
+  });
+
+  it("query params yang semuanya kosong tidak menambah '?'", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+
+    await fetchApi("/posts", { params: { a: undefined } });
+
+    expect(fetchMock.mock.calls[0][0]).toBe(`${DELCOM_BASEURL}/posts`);
+  });
+
+  it("body JSON: otomatis Content-Type application/json", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+
+    await fetchApi("/posts", { method: "POST", body: JSON.stringify({ a: 1 }) });
+
+    const init = fetchMock.mock.calls[0][1];
+    expect(init.method).toBe("POST");
+    expect(init.headers["Content-Type"]).toBe("application/json");
+    expect(init.body).toBe('{"a":1}');
+  });
+
+  it("body JSON dengan Content-Type kustom: tidak ditimpa", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+
+    await fetchApi("/x", {
+      method: "POST",
+      body: "a=1",
+      headers: { "Content-Type": "text/plain" },
+    });
+
+    expect(fetchMock.mock.calls[0][1].headers["Content-Type"]).toBe("text/plain");
+  });
+
+  it("body FormData: Content-Type tidak diset (dibiarkan browser)", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ status: "success" }));
+    const form = new FormData();
+    form.append("cover", new File(["x"], "c.png"));
+
+    await fetchApi("/posts/1/cover", { method: "POST", body: form });
+
+    expect(fetchMock.mock.calls[0][1].headers["Content-Type"]).toBeUndefined();
+    expect(fetchMock.mock.calls[0][1].body).toBe(form);
+  });
+
+  it("respons bukan JSON: melempar pesan fallback", async () => {
+    fetchMock.mockResolvedValue(mockResponse(null, { json: false }));
+
+    await expect(fetchApi("/posts")).rejects.toThrow(
+      "Gagal memproses respons server"
+    );
+  });
+
+  it("respons gagal dengan message: melempar message dari server", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse(
+        { status: "fail", message: "Kredensial akun tidak ditemukan" },
+        { ok: false, status: 401 }
+      )
+    );
+
+    await expect(fetchApi("/auth/login")).rejects.toThrow(
+      "Kredensial akun tidak ditemukan"
+    );
+  });
+
+  it("respons gagal tanpa message tetapi ada field validasi: menggabungkan pesan field", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse(
+        { status: "fail", data: { field: ["Email wajib", "Sandi wajib"] } },
+        { ok: false, status: 422 }
+      )
+    );
+
+    await expect(fetchApi("/auth/register")).rejects.toThrow(
+      "Email wajib, Sandi wajib"
+    );
+  });
+
+  it("respons gagal tanpa message dan field: pesan dengan status HTTP", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse({ data: {} }, { ok: false, status: 500 })
+    );
+
+    await expect(fetchApi("/posts")).rejects.toThrow("Request gagal (500)");
+  });
+
+  it("HTTP ok tetapi status 'fail': tetap dianggap gagal", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse({ status: "fail", message: "Ditolak" }, { ok: true })
+    );
+
+    await expect(fetchApi("/posts")).rejects.toThrow("Ditolak");
+  });
+});
+===== src\server.ts =====
+import { spawn } from "child_process";
+import { existsSync, readFileSync } from "fs";
+import { createRequire } from "module";
+import path from "path";
+
+/**
+ * Launcher Next.js. Membaca APP_PORT dari environment, lalu dari berkas
+ * .env, dan terakhir dari .env.example sebagai cadangan.
+ */
+function readEnvFile(file: string): Record<string, string> {
+  const fullPath = path.resolve(process.cwd(), file);
+  if (!existsSync(fullPath)) return {};
+  const result: Record<string, string> = {};
+  for (const rawLine of readFileSync(fullPath, "utf8").split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+    const idx = line.indexOf("=");
+    if (idx === -1) continue;
+    const key = line.slice(0, idx).trim();
+    const value = line.slice(idx + 1).trim().replace(/^['"]|['"]$/g, "");
+    result[key] = value;
+  }
+  return result;
+}
+
+const nodeRequire = createRequire(import.meta.url);
+
+const fileEnv = { ...readEnvFile(".env.example"), ...readEnvFile(".env") };
+const port = String(
+  Number(process.env.APP_PORT || fileEnv.APP_PORT) || 3000
+);
+const mode = process.argv[2] === "start" ? "start" : "dev";
+
+const proc = spawn(
+  process.execPath,
+  [nodeRequire.resolve("next/dist/bin/next"), mode, "-p", port],
+  {
+    stdio: "inherit",
+    env: { ...fileEnv, ...process.env, APP_PORT: port },
+  }
+);
+
+for (const signal of ["SIGINT", "SIGTERM"] as const) {
+  process.on(signal, () => {
+    proc.kill(signal);
+    process.exit(0);
+  });
+}
+
+proc.on("exit", (code) => process.exit(code ?? 0));
+===== src\server.test.ts =====
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { EventEmitter } from "events";
+
+const mocks = vi.hoisted(() => ({
+  spawn: vi.fn(),
+  existsSync: vi.fn(),
+  readFileSync: vi.fn(),
+}));
+
+vi.mock("child_process", () => ({
+  spawn: mocks.spawn,
+  default: { spawn: mocks.spawn },
+}));
+vi.mock("fs", () => ({
+  existsSync: mocks.existsSync,
+  readFileSync: mocks.readFileSync,
+  default: { existsSync: mocks.existsSync, readFileSync: mocks.readFileSync },
+}));
+const fakeCreateRequire = () => ({ resolve: (id: string) => `/resolved/${id}` });
+vi.mock("module", () => ({
+  createRequire: fakeCreateRequire,
+  default: { createRequire: fakeCreateRequire },
+}));
+
+class FakeProc extends EventEmitter {
+  kill = vi.fn();
+}
+
+function setFiles(files: Record<string, string>) {
+  mocks.existsSync.mockImplementation((p: string) =>
+    Object.keys(files).some((name) => p.endsWith(name))
+  );
+  mocks.readFileSync.mockImplementation((p: string) => {
+    const key = Object.keys(files).find((name) => p.endsWith(name));
+    return files[key as string];
+  });
+}
+
+async function boot(argv: string[] = []) {
+  const proc = new FakeProc();
+  mocks.spawn.mockReturnValue(proc);
+  const original = process.argv;
+  process.argv = ["bun", "server.ts", ...argv];
+  vi.resetModules();
+  await import("./server");
+  process.argv = original;
+  return proc;
+}
+
+describe("server launcher", () => {
+  const exitSpy = vi.spyOn(process, "exit").mockImplementation((() => undefined) as never);
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.stubEnv("APP_PORT", "");
+    setFiles({});
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    process.removeAllListeners("SIGINT");
+    process.removeAllListeners("SIGTERM");
+  });
+
+  it("tanpa env dan tanpa berkas: mode dev di port 3000", async () => {
+    await boot();
+
+    const [, args, options] = mocks.spawn.mock.calls[0];
+    expect(args).toEqual(["/resolved/next/dist/bin/next", "dev", "-p", "3000"]);
+    expect(options.stdio).toBe("inherit");
+    expect(options.env.APP_PORT).toBe("3000");
+  });
+
+  it("membaca APP_PORT dari .env, mengabaikan komentar, baris kosong, dan baris tanpa '='", async () => {
+    setFiles({
+      ".env": '# komentar\n\nTANPA_SAMA\nAPP_PORT="4000"\r\nNEXT_PUBLIC_X=1\n',
+    });
+    await boot(["start"]);
+
+    const [, args, options] = mocks.spawn.mock.calls[0];
+    expect(args.slice(1)).toEqual(["start", "-p", "4000"]);
+    expect(options.env.NEXT_PUBLIC_X).toBe("1");
+  });
+
+  it("memakai .env.example sebagai cadangan, dan .env menimpanya", async () => {
+    setFiles({ ".env.example": "APP_PORT=5000\n" });
+    await boot();
+    expect(mocks.spawn.mock.calls[0][1]).toContain("5000");
+
+    vi.clearAllMocks();
+    setFiles({ ".env.example": "APP_PORT=5000\n", ".env": "APP_PORT=6000\n" });
+    await boot();
+    expect(mocks.spawn.mock.calls[0][1]).toContain("6000");
+  });
+
+  it("variabel environment proses lebih diutamakan daripada berkas", async () => {
+    vi.stubEnv("APP_PORT", "7000");
+    setFiles({ ".env": "APP_PORT=6000\n" });
+    await boot();
+
+    expect(mocks.spawn.mock.calls[0][1]).toContain("7000");
+  });
+
+  it("argumen selain 'start' menjalankan mode dev", async () => {
+    await boot(["apa-saja"]);
+    expect(mocks.spawn.mock.calls[0][1][1]).toBe("dev");
+  });
+
+  it("SIGINT dan SIGTERM meneruskan sinyal ke proses anak lalu keluar", async () => {
+    const proc = await boot();
+
+    process.emit("SIGINT");
+    expect(proc.kill).toHaveBeenCalledWith("SIGINT");
+    process.emit("SIGTERM");
+    expect(proc.kill).toHaveBeenCalledWith("SIGTERM");
+    expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+
+  it("meneruskan kode keluar proses anak; null menjadi 0", async () => {
+    const proc = await boot();
+
+    proc.emit("exit", 3);
+    expect(exitSpy).toHaveBeenLastCalledWith(3);
+    proc.emit("exit", null);
+    expect(exitSpy).toHaveBeenLastCalledWith(0);
+  });
+});
+===== src\types\action.ts =====
+export type ActionType = string;
+
+export interface Action {
+  type: ActionType;
+  payload?: unknown;
+}
+===== C:\PABWE\ifs24005-pabwe2026-nextjs\src\types\action.ts =====
+export type ActionType = string;
+
+export interface Action {
+  type: ActionType;
+  payload?: unknown;
+}
+===== C:\PABWE\ifs24005-pabwe2026-nextjs\src\types\index.ts =====
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  email_verified_at?: string | null;
+  photo?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface PostAuthor {
+  name: string;
+  photo?: string | null;
+}
+
+export interface PostComment {
+  id: number;
+  comment: string;
+  created_at?: string;
+  updated_at?: string;
+  user_id?: number;
+  author?: PostAuthor;
+}
+
+export interface Post {
+  id: number;
+  user_id: number;
+  cover?: string | null;
+  description: string;
+  created_at?: string;
+  updated_at?: string;
+  author?: PostAuthor;
+  likes?: number[];
+  comments?: PostComment[] | number[];
+  my_comment?: PostComment | null;
+}
+
+export interface ApiResult<T = unknown> {
+  status: "success" | "fail";
+  message: string;
+  data?: T;
+}

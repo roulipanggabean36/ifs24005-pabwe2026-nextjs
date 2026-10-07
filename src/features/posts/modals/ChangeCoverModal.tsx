@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { asyncChangeCoverPost } from "../states/action";
 import { IconX, IconPhoto } from "@tabler/icons-react";
@@ -17,7 +17,7 @@ export default function ChangeCoverModal({
   onClose,
   postId,
   onSuccess,
-}: ChangeCoverModalProps) {
+}: Readonly<ChangeCoverModalProps>) {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ export default function ChangeCoverModal({
     setPreview(URL.createObjectURL(f));
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!file) return;
     const result = await dispatch(
@@ -81,7 +81,7 @@ export default function ChangeCoverModal({
               </div>
             )}
             <label className="inline-block mt-3 px-4 py-2 rounded-lg border border-slate-200 text-sm cursor-pointer hover:bg-slate-50">
-              Pilih File
+              <span>Pilih File</span>
               <input
                 type="file"
                 accept="image/*"

@@ -1,7 +1,7 @@
-import { spawn } from "child_process";
-import { existsSync, readFileSync } from "fs";
-import { createRequire } from "module";
-import path from "path";
+import { spawn } from "node:child_process";
+import { existsSync, readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import path from "node:path";
 
 /**
  * Launcher Next.js. Membaca APP_PORT dari environment, lalu dari berkas
@@ -17,7 +17,10 @@ function readEnvFile(file: string): Record<string, string> {
     const idx = line.indexOf("=");
     if (idx === -1) continue;
     const key = line.slice(0, idx).trim();
-    const value = line.slice(idx + 1).trim().replace(/^['"]|['"]$/g, "");
+    const value = line
+      .slice(idx + 1)
+      .trim()
+      .replaceAll(/(?:^['"])|(?:['"]$)/g, "");
     result[key] = value;
   }
   return result;

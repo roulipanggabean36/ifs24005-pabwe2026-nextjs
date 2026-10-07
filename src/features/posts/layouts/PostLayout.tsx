@@ -10,9 +10,9 @@ import SidebarComponent from "../components/SidebarComponent";
 
 export default function PostLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [sidebarOpen, setSidebarOpen] = useState(false);

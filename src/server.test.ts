@@ -7,17 +7,17 @@ const mocks = vi.hoisted(() => ({
   readFileSync: vi.fn(),
 }));
 
-vi.mock("child_process", () => ({
+vi.mock("node:child_process", () => ({
   spawn: mocks.spawn,
   default: { spawn: mocks.spawn },
 }));
-vi.mock("fs", () => ({
+vi.mock("node:fs", () => ({
   existsSync: mocks.existsSync,
   readFileSync: mocks.readFileSync,
   default: { existsSync: mocks.existsSync, readFileSync: mocks.readFileSync },
 }));
 const fakeCreateRequire = () => ({ resolve: (id: string) => `/resolved/${id}` });
-vi.mock("module", () => ({
+vi.mock("node:module", () => ({
   createRequire: fakeCreateRequire,
   default: { createRequire: fakeCreateRequire },
 }));

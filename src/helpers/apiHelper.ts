@@ -3,12 +3,12 @@ import { DELCOM_BASEURL } from "@/lib/config";
 const ACCESS_TOKEN_KEY = "accessToken";
 
 export function getAccessToken(): string | null {
-  if (typeof window === "undefined") return null;
+  if (typeof globalThis.window === "undefined") return null;
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 }
 
 export function putAccessToken(token: string | null): void {
-  if (typeof window === "undefined") return;
+  if (typeof globalThis.window === "undefined") return;
   if (token) {
     localStorage.setItem(ACCESS_TOKEN_KEY, token);
   } else {
@@ -36,7 +36,10 @@ export async function fetchApi<T = unknown>(
     params,
   } = options;
 
-  let url = `${DELCOM_BASEURL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
+  const normalizedEndpoint = endpoint.startsWith("/")
+    ? endpoint
+    : `/${endpoint}`;
+  let url = `${DELCOM_BASEURL}${normalizedEndpoint}`;
 
   if (params) {
     const search = new URLSearchParams();

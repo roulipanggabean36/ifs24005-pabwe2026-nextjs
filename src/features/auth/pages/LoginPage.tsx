@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect } from "react";
+import { SyntheticEvent, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useInput from "@/hooks/useInput";
@@ -21,7 +21,7 @@ export default function LoginPage() {
     }
   }, [authUser, router]);
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email || !password) return;
     const result = await dispatch(asyncLogin({ email, password }));

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
@@ -51,10 +51,10 @@ export default function DetailPage() {
   }
 
   const isOwner = post && profile && post.user_id === profile.id;
-  const likes = Array.isArray(post?.likes) ? (post!.likes as number[]) : [];
+  const likes = Array.isArray(post?.likes) ? post.likes : [];
   const myCommentId = post?.my_comment?.id;
   const comments: PostComment[] = Array.isArray(post?.comments)
-    ? (post!.comments as PostComment[]).filter(
+    ? (post.comments as PostComment[]).filter(
         (c) =>
           typeof c === "object" &&
           c !== null &&
@@ -72,7 +72,7 @@ export default function DetailPage() {
     refresh();
   }
 
-  async function handleComment(e: FormEvent) {
+  async function handleComment(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!comment.trim()) return;
     const result = await dispatch(

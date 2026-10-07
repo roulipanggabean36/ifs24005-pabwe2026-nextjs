@@ -6,9 +6,9 @@ import { getAccessToken } from "@/helpers/apiHelper";
 
 export default function AuthLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   const router = useRouter();
 
   useEffect(() => {

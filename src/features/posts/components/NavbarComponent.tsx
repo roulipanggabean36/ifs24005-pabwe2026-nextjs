@@ -24,7 +24,9 @@ const dropdownLinks = [
   { href: "/users", label: "Daftar Pengguna", icon: IconUsers },
 ];
 
-export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
+export default function NavbarComponent({
+  onToggleSidebar,
+}: Readonly<NavbarProps>) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const profile = useAppSelector((state) => state.users.profile);

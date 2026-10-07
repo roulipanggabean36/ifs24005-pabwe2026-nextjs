@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent } from "react";
+import { SyntheticEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useInput from "@/hooks/useInput";
@@ -16,7 +16,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const { isAuthRegister } = useAppSelector((state) => state.auth);
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!name || !email || !password) return;
     const result = await dispatch(asyncRegister({ name, email, password }));

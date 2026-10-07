@@ -1,6 +1,4 @@
-export type ActionType = string;
-
 export interface Action {
-  type: ActionType;
+  type: string;
   payload?: unknown;
 }

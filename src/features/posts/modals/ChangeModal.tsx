@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect } from "react";
+import { SyntheticEvent, useEffect } from "react";
 import useInput from "@/hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { asyncChangePost } from "../states/action";
@@ -20,7 +20,7 @@ export default function ChangeModal({
   postId,
   initialDescription = "",
   onSuccess,
-}: ChangeModalProps) {
+}: Readonly<ChangeModalProps>) {
   const [description, onDescriptionChange, setDescription] = useInput("");
   const dispatch = useAppDispatch();
   const { isPostChange } = useAppSelector((state) => state.posts);
@@ -31,7 +31,7 @@ export default function ChangeModal({
 
   if (!open) return null;
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!description.trim()) return;
     const result = await dispatch(
@@ -58,10 +58,14 @@ export default function ChangeModal({
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label
+              htmlFor="change-description"
+              className="block text-sm font-medium text-slate-700 mb-1"
+            >
               Deskripsi
             </label>
             <textarea
+              id="change-description"
               value={description}
               onChange={onDescriptionChange}
               rows={4}

@@ -109,9 +109,9 @@ export default function HomePage() {
         <Link
           href="/"
           className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition ${
-            !tabMe
-              ? "border-teal-700 text-teal-700"
-              : "border-transparent text-slate-600 hover:text-slate-800"
+            tabMe
+              ? "border-transparent text-slate-600 hover:text-slate-800"
+              : "border-teal-700 text-teal-700"
           }`}
         >
           Semua
@@ -197,7 +197,7 @@ export default function HomePage() {
                 <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-100">
                   <button
                     type="button"
-                    onClick={() => handleLike(post.id, likes as number[])}
+                    onClick={() => handleLike(post.id, likes)}
                     title={liked ? "Batal suka" : "Suka"}
                     className={`inline-flex items-center gap-1 text-sm ${
                       liked

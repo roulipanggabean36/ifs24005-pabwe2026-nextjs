@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent } from "react";
+import { SyntheticEvent } from "react";
 import useInput from "@/hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { asyncAddPost } from "../states/action";
@@ -12,14 +12,18 @@ interface AddModalProps {
   onSuccess?: () => void;
 }
 
-export default function AddModal({ open, onClose, onSuccess }: AddModalProps) {
+export default function AddModal({
+  open,
+  onClose,
+  onSuccess,
+}: Readonly<AddModalProps>) {
   const [description, onDescriptionChange, , reset] = useInput("");
   const dispatch = useAppDispatch();
   const { isPostAdd } = useAppSelector((state) => state.posts);
 
   if (!open) return null;
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!description.trim()) return;
     const result = await dispatch(asyncAddPost(description.trim()));
@@ -45,10 +49,14 @@ export default function AddModal({ open, onClose, onSuccess }: AddModalProps) {
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label
+              htmlFor="add-description"
+              className="block text-sm font-medium text-slate-700 mb-1"
+            >
               Deskripsi
             </label>
             <textarea
+              id="add-description"
               value={description}
               onChange={onDescriptionChange}
               rows={4}

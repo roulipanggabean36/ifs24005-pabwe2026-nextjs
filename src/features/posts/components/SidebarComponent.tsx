@@ -22,7 +22,16 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-export default function SidebarComponent({ open, onClose }: SidebarProps) {
+function isMenuActive(href: string, pathname: string, tabMe: boolean) {
+  if (href === "/") return pathname === "/" && !tabMe;
+  if (href === "/?tab=me") return pathname === "/" && tabMe;
+  return pathname.startsWith(href);
+}
+
+export default function SidebarComponent({
+  open,
+  onClose,
+}: Readonly<SidebarProps>) {
   const pathname = usePathname();
   const tabMe = useSearchParams().get("tab") === "me";
 
@@ -31,6 +40,7 @@ export default function SidebarComponent({ open, onClose }: SidebarProps) {
       {/* Overlay mobile */}
       {open && (
         <div
+          role="presentation"
           className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           onClick={onClose}
         />
@@ -59,13 +69,7 @@ export default function SidebarComponent({ open, onClose }: SidebarProps) {
 
         <nav className="p-3 space-y-1">
           {menus.map((menu) => {
-            const isActive =
-              menu.href === "/"
-                ? pathname === "/" && !tabMe
-                : menu.href === "/?tab=me"
-                  ? pathname === "/" && tabMe
-                  : pathname.startsWith(menu.href);
-
+            const isActive = isMenuActive(menu.href, pathname, tabMe);
             const Icon = menu.icon;
             return (
               <Link
