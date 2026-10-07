@@ -41,7 +41,6 @@ export default function DetailPage() {
 
   useEffect(() => {
     if (postId) dispatch(asyncGetDetailPost(postId));
-    // Bersihkan data lama agar tidak tampil sesaat saat membuka postingan lain
     return () => {
       dispatch(clearPost());
     };
@@ -170,8 +169,9 @@ export default function DetailPage() {
             <button
               type="button"
               onClick={handleLike}
+              aria-label={liked ? "Batal suka" : "Suka"}
               className={`inline-flex items-center gap-1.5 text-sm font-medium ${
-                liked ? "text-red-700" : "text-slate-600 hover:text-red-700"
+                liked ? "text-red-500" : "text-slate-600 hover:text-red-700"
               }`}
             >
               {liked ? (
@@ -252,6 +252,7 @@ export default function DetailPage() {
             <button
               type="button"
               onClick={handleDeleteComment}
+              title="Hapus komentar"
               aria-label="Hapus komentar"
               className="text-red-700 hover:text-red-800 p-1"
             >

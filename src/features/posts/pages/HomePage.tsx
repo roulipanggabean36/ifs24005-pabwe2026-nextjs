@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -202,7 +202,7 @@ export default function HomePage() {
                     aria-label={liked ? "Batal suka" : "Suka"}
                     className={`inline-flex items-center gap-1 text-sm ${
                       liked
-                        ? "text-red-700"
+                        ? "text-red-500"
                         : "text-slate-600 hover:text-red-700"
                     }`}
                   >
