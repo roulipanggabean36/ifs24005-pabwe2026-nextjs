@@ -44,7 +44,6 @@ export default function PostLayout({
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <h1 className="sr-only">Delcom Posts</h1>
       <NavbarComponent onToggleSidebar={() => setSidebarOpen((v) => !v)} />
       <div className="flex">
         <Suspense fallback={null}>

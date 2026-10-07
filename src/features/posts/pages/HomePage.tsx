@@ -199,7 +199,7 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => handleLike(post.id, likes as number[])}
-                    aria-label={liked ? "Batal suka" : "Suka"}
+                    title={liked ? "Batal suka" : "Suka"}
                     className={`inline-flex items-center gap-1 text-sm ${
                       liked
                         ? "text-red-500"
@@ -215,7 +215,7 @@ export default function HomePage() {
                   </button>
                   <Link
                     href={`/posts/${post.id}`}
-                    aria-label={`${commentsCount} komentar`}
+                    title={`${commentsCount} komentar`}
                     className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-teal-700"
                   >
                     <IconMessageCircle size={18} aria-hidden="true" />

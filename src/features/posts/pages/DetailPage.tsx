@@ -169,7 +169,7 @@ export default function DetailPage() {
             <button
               type="button"
               onClick={handleLike}
-              aria-label={liked ? "Batal suka" : "Suka"}
+              title={liked ? "Batal suka" : "Suka"}
               className={`inline-flex items-center gap-1.5 text-sm font-medium ${
                 liked ? "text-red-500" : "text-slate-600 hover:text-red-700"
               }`}

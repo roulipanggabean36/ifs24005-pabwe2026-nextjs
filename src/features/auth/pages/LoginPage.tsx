@@ -17,7 +17,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (authUser) {
-      router.replace("/dashboard");
+      router.replace("/");
     }
   }, [authUser, router]);
 
@@ -26,7 +26,7 @@ export default function LoginPage() {
     if (!email || !password) return;
     const result = await dispatch(asyncLogin({ email, password }));
     if (asyncLogin.fulfilled.match(result)) {
-      router.replace("/dashboard");
+      router.replace("/");
     }
   }
 

@@ -20,7 +20,7 @@ interface NavbarProps {
 
 const dropdownLinks = [
   { href: "/profile", label: "Profil Saya", icon: IconUser },
-  { href: "/dashboard?tab=me", label: "Postingan Saya", icon: IconArticle },
+  { href: "/?tab=me", label: "Postingan Saya", icon: IconArticle },
   { href: "/users", label: "Daftar Pengguna", icon: IconUsers },
 ];
 
@@ -65,8 +65,7 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
         >
           P
         </span>
-        <span className="hidden sm:inline">Delcom Posts</span>
-        <span className="sm:hidden sr-only">Delcom Posts</span>
+        <span>Delcom Posts</span>
       </Link>
 
       <div className="flex-1" />
@@ -78,7 +77,6 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
             onClick={() => setMenuOpen((v) => !v)}
             aria-haspopup="menu"
             aria-expanded={menuOpen}
-            aria-label={`Menu akun ${profile?.name || "pengguna"}`}
             className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-slate-50 transition"
           >
             <div className="w-8 h-8 rounded-full bg-teal-100 overflow-hidden">
@@ -86,7 +84,7 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={profile.photo}
-                  alt=""
+                  alt={profile.name || ""}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -140,6 +138,7 @@ export default function NavbarComponent({ onToggleSidebar }: NavbarProps) {
           type="button"
           onClick={handleLogout}
           aria-label="Keluar"
+          title="Keluar"
           className="p-2 rounded-lg hover:bg-red-50 text-slate-600 hover:text-red-700 transition"
         >
           <IconLogout size={20} aria-hidden="true" />
